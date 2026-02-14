@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The One Thing Google Doesn't Know ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 50px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 80px;
+            }
+        }
+
+        /* Floating hearts animation */
+        .heart {
+            position: fixed;
+            font-size: 24px;
+            animation: float 6s infinite;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+        }
+
+        /* Google-style search box */
+        .search-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin: 60px auto 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                padding: 25px 15px;
+                margin: 30px auto 20px;
+                border-radius: 16px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 32px;
+            }
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ff6b6b;
+            border-radius: 24px;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                padding: 10px 15px;
+                border-radius: 20px;
+            }
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 16px;
+            padding: 0 10px;
+        }
+
+        @media (max-width: 768px) {
+            .search-box input {
+                font-size: 14px;
+            }
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 0 5px;
+        }
+
+        @media (max-width: 768px) {
+            .search-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+                margin: 5px;
+                width: calc(50% - 10px);
+                display: inline-block;
+            }
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        /* Result cards */
+        .results {
+            display: none;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .result-card {
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+        }
+
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(255,107,107,0.3);
+        }
+
+        .result-title {
+            color: #1a73e8;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .result-title {
+                font-size: 16px;
+            }
+        }
+
+        .result-url {
+            color: #5f6368;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .result-url {
+                font-size: 12px;
+                word-break: break-all;
+            }
+        }
+
+        .result-desc {
+            color: #3c4043;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .result-desc {
+                font-size: 14px;
+            }
+        }
+
+        /* Hidden messages */
+        .hidden-message {
+            display: none;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 15px;
+            animation: reveal 0.5s;
+        }
+
+        @media (max-width: 768px) {
+            .hidden-message {
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+            
+            .hidden-message h3 {
+                font-size: 18px;
+            }
+            
+            .hidden-message p {
+                font-size: 14px;
+            }
+        }
+
+        @keyframes reveal {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Quiz section */
+        .quiz-section {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .quiz-section {
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+        }
+
+        .quiz-question {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-question {
+                font-size: 16px;
+            }
+        }
+
+        .quiz-option {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-option {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        .quiz-option:hover {
+            background: #ffe5e5;
+            border-color: #ff6b6b;
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        /* Final message */
+        .final-message {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .final-message {
+                padding: 25px 15px;
+                border-radius: 12px;
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .final-message h2 {
+            color: #ff6b6b;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .final-message h2 {
+                font-size: 24px;
+            }
+        }
+
+        .final-message p {
+            color: #555;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .final-message p {
+                font-size: 15px;
+                line-height: 1.6;
+            }
+        }
+
+        .heart-big {
+            font-size: 80px;
+            animation: pulse 1s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .heart-big {
+                font-size: 60px;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Easter egg button */
+        .easter-egg {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            border-radius: 50%;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .easter-egg {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        .easter-egg:hover {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .click-count {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            font-weight: 600;
+            color: #ff6b6b;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .click-count {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 12px;
+                border-radius: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="click-count">Clicks of Love: <span id="clickCounter">0</span> ❤️</div>
+
+    <div class="container">
+        <!-- Search Container -->
+        <div class="search-container">
+            <div class="logo">❤️ Google (Chalani Edition) ❤️</div>
+            <div class="subtitle">The search engine that knows everything... except THIS!</div>
+            <div class="search-box">
+                <span>🔍</span>
+                <input type="text" id="searchInput" placeholder="Search for love..." readonly value="How much does he love me?">
+            </div>
+            <button class="search-btn" onclick="startSearch()">💕 Google Search</button>
+            <button class="search-btn" onclick="feelingLucky()">💖 I'm Feeling Lucky</button>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results" id="results">
+            <div class="result-card" onclick="revealMessage(1)">
+                <div class="result-title">🌟 Error 404: Love Measurement Not Found</div>
+                <div class="result-url">https://my-heart.com/chalani/infinite-love</div>
+                <div class="result-desc">
+                    Even Google's powerful algorithms can't calculate how much I love you. The number is so large, it breaks all databases...
+                </div>
+                <div class="hidden-message" id="message1">
+                    <h3>🎯 Dear My Google,</h3>
+                    <p>You know everything from cooking recipes to quantum physics, but there's ONE thing you'll never know better than me... and that's how lucky I am to have you! You might have all the answers, but YOU are my favorite answer to life. ❤️</p>
+                </div>
+            </div>
+
+            <div class="result-card" onclick="revealMessage(2)">
+                <div class="result-title">🗺️ "Google Maps Expert" - User Review: ⭐⭐⭐⭐⭐</div>
+                <div class="result-url">https://navigation-fails.com/chalani/left-or-right</div>
+                <div class="result-desc">
+                    Featured Navigator who revolutionized the concept of "left" and "right." Experts say: "We've never seen someone make wrong turns with such confidence!"
+                </div>
+                <div class="hidden-message" id="message2">
+                    <h3>🧭 GPS Status: Lost (But Adorably!)</h3>
+                    <p><strong>Me:</strong> "Which way?"<br>
+                    <strong>You:</strong> "Turn left!" *points right* 😂<br>
+                    <strong>Me:</strong> "Are you sure?"<br>
+                    <strong>You:</strong> "YES! Google Maps says so!"<br>
+                    <strong>Google Maps:</strong> "I said RIGHT, not left..." 🤦‍♂️</p>
+                    <p>But you know what? I'd rather get lost with you than find the right way with anyone else! Every wrong turn is an adventure when you're with me. Plus, we've discovered so many random places because of your "creative navigation"! 😘 Love you, my beautiful GPS! 📍❤️</p>
+                </div>
+            </div>
+
+            <div class="result-card" onclick="revealMessage(3)">
+                <div class="result-title">💝 Top Search Result: "Perfect Wife"</div>
+                <div class="result-url">https://universe.com/definitions/chalani</div>
+                <div class="result-desc">
+                    When you search for "perfect wife," Google just shows a picture of you. Even Google knows the truth...
+                </div>
+                <div class="hidden-message" id="message3">
+                    <h3>😄 Fun Fact Alert!</h3>
+                    <p>I call you Google because you know everything... but let me tell you what even YOU don't know: How your smile can make any bad day disappear instantly. How your laugh is better than any song on Spotify. How every moment with you feels like winning the lottery! 🎰💕</p>
+                </div>
+            </div>
+
+            <div class="result-card" onclick="revealMessage(4)">
+                <div class="result-title">👨‍💻 "How to Code Better" - Professional Advice Column</div>
+                <div class="result-url">https://software-guru-chalani.com/tips-for-husband</div>
+                <div class="result-desc">
+                    Senior Software Architect shares wisdom on development best practices and vehicle operation techniques. No prior experience required!
+                </div>
+                <div class="hidden-message" id="message4">
+                    <h3>💼 Chalani's Tech & Driving Academy 🚗</h3>
+                    <p><strong>"You should code it like THIS..."</strong> - Even though she's never written a function 😂<br>
+                    <strong>"You're driving too fast/slow/left/right..."</strong> - Meanwhile, her driving... let's not talk about it! 🙈<br>
+                    <strong>"Why don't you just use that thing that does the thing?"</strong> - Very technical advice! 💻</p>
+                    <p>But honestly? I LOVE when you try to help! Your confidence is hilarious and adorable at the same time. You make me laugh even when I'm stressed about work. Keep those "expert tips" coming, my love! You're my favorite backseat developer AND backseat driver! 😄❤️</p>
+                </div>
+            </div>
+
+            <div class="result-card" onclick="revealMessage(5)">
+                <div class="result-title">😴 "Road Trip Activities" - Research Study</div>
+                <div class="result-url">https://travel-statistics.com/chalani-trip-data</div>
+                <div class="result-desc">
+                    Groundbreaking study reveals optimal travel companion behavior. Results: 90% Sleep, 10% Snacking. Scientists amazed!
+                </div>
+                <div class="hidden-message" id="message5">
+                    <h3>📊 Official Trip Statistics:</h3>
+                    <p>
+                    🛌 <strong>Sleeping:</strong> 90% (World Record Holder!)<br>
+                    🍿 <strong>Eating:</strong> 10% (Snack Champion!)<br>
+                    🗺️ <strong>Navigation Help:</strong> -5% (Yes, NEGATIVE! 😂)<br>
+                    💕 <strong>Making Me Smile:</strong> 1000%!!!
+                    </p>
+                    <p><strong>Trip Reality Check:</strong><br>
+                    <strong>Me:</strong> "We're almost there!"<br>
+                    <strong>You:</strong> *sleeping* 😴<br>
+                    <strong>Me:</strong> "Want to see this beautiful view?"<br>
+                    <strong>You:</strong> *still sleeping* 💤<br>
+                    <strong>Me:</strong> "We arrived!"<br>
+                    <strong>You:</strong> "Already?? Did we pass any snack shops?" 🍕</p>
+                    <p>You know what though? Watching you sleep peacefully makes every long drive worth it. You trust me enough to completely relax. That's love right there! ❤️ Plus, when you wake up, your confused "Where are we?" face is THE CUTEST THING EVER! 🥰</p>
+                </div>
+            </div>
+
+            <div class="result-card" onclick="revealMessage(6)">
+                <div class="result-title">🎪 "Things That Make Me Smile" - Wikipedia</div>
+                <div class="result-url">https://my-life.com/happiness/chalani</div>
+                <div class="result-desc">
+                    Click to see the complete list... (Spoiler: It's all about you!)
+                </div>
+                <div class="hidden-message" id="message6">
+                    <h3>📋 Complete List:</h3>
+                    <p>1. Chalani's smile<br>
+                    2. Chalani's laugh<br>
+                    3. Chalani's "expert" directions (that are 100% wrong) 🗺️😂<br>
+                    4. When Chalani explains coding to me (the coder) 👨‍💻<br>
+                    5. Chalani sleeping through entire road trips 😴<br>
+                    6. Chalani waking up asking "Did I miss anything?" YES, EVERYTHING! 😄<br>
+                    7. Chalani's confidence when she's completely wrong 💕<br>
+                    8. Every single chaotic, confusing, adorable moment with Chalani<br>
+                    ...and 1,000,000 more reasons! 💕</p>
+                </div>
+            </div>
+
+            <div class="result-card" onclick="showQuiz()">
+                <div class="result-title">🎯 Quiz Time: Even Google Can't Answer These!</div>
+                <div class="result-url">https://love-challenges.com/our-story</div>
+                <div class="result-desc">
+                    Think you know everything? Try this impossible quiz about us! (Of course, you'll ace it... you're Google! 😉)
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section" id="quizSection">
+            <div class="quiz-question">❓ What's the REAL reason I call you Google?</div>
+            <div class="quiz-option" onclick="answerQuiz(this, false)">Because you search things online a lot</div>
+            <div class="quiz-option" onclick="answerQuiz(this, false)">Because you give me directions (wrong ones, but still directions! 😂)</div>
+            <div class="quiz-option" onclick="answerQuiz(this, true)">Because you're my whole world, my answer to everything, and I can't imagine life without searching for you every single day! Even when you're sleeping 90% of the time! ❤️</div>
+            <div class="quiz-option" onclick="answerQuiz(this, false)">Because you know how to code better than me (apparently! 😄)</div>
+        </div>
+
+        <!-- Final Message -->
+        <div class="final-message" id="finalMessage">
+            <div class="heart-big">❤️</div>
+            <h2>Dear Chalani, My Google 💕</h2>
+            <p>On this Valentine's Day, I just want to tell you something even YOU don't know...</p>
+            <p><strong>Every day with you is Valentine's Day for me.</strong></p>
+            <p>Yes, you give me wrong directions. Yes, you tell me how to code (when you don't code 😂). Yes, you sleep through 90% of our trips and eat through the other 10%. And you know what?</p>
+            <p><strong>I WOULDN'T CHANGE A SINGLE THING!</strong></p>
+            <p>Your confident "Turn left!" (while pointing right) makes me laugh. Your backseat coding advice makes my stressful days better. Watching you sleep peacefully on trips reminds me how lucky I am that you trust me completely. And your "Did I miss anything?" when you wake up? EVERYTHING. But having you with me IS everything! 🥰</p>
+            <p>You might know everything (or imagine you do 😂), but you might not realize how much these little "imperfect" moments are actually PERFECT to me. You're not just my wife - you're my best friend, my co-pilot (even if you can't navigate 🗺️😄), my everything.</p>
+            <p>Thank you for being patient with this software engineer who sometimes has no idea what he's doing in life... except when it comes to loving you. That, I know for SURE! 💯</p>
+            <p><strong>Happy Valentine's Day, My Beautiful, Sleepy, Snack-Loving, Direction-Challenged, Code-Advising, Absolutely Perfect Google! 🌹</strong></p>
+            <p style="font-size: 14px; margin-top: 30px; color: #888;">P.S. - Next trip, I'm buying you a compass. Not that you'll use it correctly, but it'll be cute watching you try! 😘 Love you forever! 💕</p>
+        </div>
+    </div>
+
+    <!-- Easter Egg Button -->
+    <button class="easter-egg" onclick="easterEgg()">🎁</button>
+
+    <script>
+        let clickCount = 0;
+        let heartsCreated = 0;
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 6000);
+        }
+
+        // Start creating hearts periodically
+        setInterval(createHeart, 800);
+
+        function incrementClicks() {
+            clickCount++;
+            document.getElementById('clickCounter').textContent = clickCount;
+            createHeart();
+            createHeart();
+        }
+
+        function startSearch() {
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+            incrementClicks();
+        }
+
+        function feelingLucky() {
+            document.getElementById('finalMessage').style.display = 'block';
+            document.getElementById('finalMessage').scrollIntoView({ behavior: 'smooth' });
+            incrementClicks();
+            
+            // Create heart explosion
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 100);
+            }
+        }
+
+        function revealMessage(num) {
+            const message = document.getElementById('message' + num);
+            if (message.style.display === 'none' || message.style.display === '') {
+                message.style.display = 'block';
+            } else {
+                message.style.display = 'none';
+            }
+            incrementClicks();
+        }
+
+        function showQuiz() {
+            document.getElementById('quizSection').style.display = 'block';
+            document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
+            incrementClicks();
+        }
+
+        function answerQuiz(element, isCorrect) {
+            if (isCorrect) {
+                element.classList.add('correct');
+                element.innerHTML += ' ✓ CORRECT! That\'s my girl! 😘';
+                setTimeout(() => {
+                    document.getElementById('finalMessage').style.display = 'block';
+                    document.getElementById('finalMessage').scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+                
+                // Heart explosion
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(createHeart, i * 80);
+                }
+            } else {
+                element.style.background = '#ffebee';
+                element.innerHTML += ' ❌ Try again, my Google knows better!';
+            }
+            incrementClicks();
+        }
+
+        function easterEgg() {
+            alert('🎁 BONUS SURPRISE! 🎁\n\n"Top 5 Things My Google Taught Me:"\n\n1. Left and Right are "suggestions" not directions 🧭\n2. Sleeping is a valid travel activity 😴\n3. Every trip needs snacks (LOTS of snacks) 🍕\n4. You can give coding advice without knowing code 💻\n5. Being confidently wrong is absolutely adorable! 😄\n\nBut most importantly:\n"Behind every successful software engineer is a wife sleeping in the car while he drives in circles because she said LEFT instead of RIGHT! 😂"\n\nI love you more than all the snacks on all our trips combined! ❤️\n\n- Your favorite confused developer who still doesn\'t know if you mean left or right! 🗺️💕');
+            incrementClicks();
+            
+            // Super heart explosion
+            for (let i = 0; i < 30; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+        }
+
+        // Add click tracking to all clickable elements
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.result-card, .search-btn, .quiz-option, .easter-egg')) {
+                // Already handled in specific functions
+            }
+        });
+    </script>
+</body>
+</html>
