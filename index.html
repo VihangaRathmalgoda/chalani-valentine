@@ -450,6 +450,163 @@
                 border-radius: 15px;
             }
         }
+
+        /* Gift Popup Modal */
+        .gift-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+
+        .gift-modal.show {
+            display: flex;
+        }
+
+        .gift-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: bounceIn 0.6s;
+        }
+
+        @media (max-width: 768px) {
+            .gift-content {
+                padding: 30px 20px;
+                max-width: 90%;
+            }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .gift-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: swing 1s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .gift-icon {
+                font-size: 70px;
+            }
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+
+        .gift-title {
+            font-size: 36px;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .gift-title {
+                font-size: 28px;
+            }
+        }
+
+        .gift-score {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .gift-score {
+                font-size: 36px;
+            }
+        }
+
+        .gift-message {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .gift-message {
+                font-size: 16px;
+            }
+        }
+
+        .refrigerator-hint {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+            font-size: 22px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .refrigerator-hint {
+                padding: 15px;
+                font-size: 18px;
+            }
+        }
+
+        .close-gift-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .close-gift-btn {
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+        }
+
+        .close-gift-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            position: absolute;
+            animation: confetti-fall 3s linear;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -583,10 +740,64 @@
         <!-- Quiz Section -->
         <div class="quiz-section" id="quizSection">
             <div class="quiz-question">❓ What's the REAL reason I call you Google?</div>
-            <div class="quiz-option" onclick="answerQuiz(this, false)">Because you search things online a lot</div>
-            <div class="quiz-option" onclick="answerQuiz(this, false)">Because you give me directions (wrong ones, but still directions! 😂)</div>
-            <div class="quiz-option" onclick="answerQuiz(this, true)">Because you're my whole world, my answer to everything, and I can't imagine life without searching for you every single day! Even when you're sleeping 90% of the time! ❤️</div>
-            <div class="quiz-option" onclick="answerQuiz(this, false)">Because you know how to code better than me (apparently! 😄)</div>
+            <div class="quiz-option" onclick="answerQuiz(this, false, 1)">Because you search things online a lot</div>
+            <div class="quiz-option" onclick="answerQuiz(this, false, 1)">Because you give me directions (wrong ones, but still directions! 😂)</div>
+            <div class="quiz-option" onclick="answerQuiz(this, true, 1)">Because you're my whole world, my answer to everything, and I can't imagine life without searching for you every single day! Even when you're sleeping 90% of the time! ❤️</div>
+            <div class="quiz-option" onclick="answerQuiz(this, false, 1)">Because you know how to code better than me (apparently! 😄)</div>
+        </div>
+
+        <!-- New Quiz Section: How Well Do You Know Me? -->
+        <div class="quiz-section" id="newQuizSection" style="display: none;">
+            <h2 style="color: #ff6b6b; text-align: center; margin-bottom: 20px;">🎯 How Well Do You Know Your Software Engineer? 💕</h2>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">Time to test that Google-level knowledge! Each correct answer = 20 points!</p>
+            
+            <div style="margin-bottom: 30px;">
+                <div class="quiz-question">🏍️ Question 1: What's my favorite vehicle?</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, true, 1)">🏍️ Bike</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 1)">🚗 Car</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 1)">🚐 Van</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 1)">🚌 Bus</div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <div class="quiz-question">🏁 Question 2: What's my favorite vehicle brand?</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 2)">Honda</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 2)">BMW</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, true, 2)">Kawasaki</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 2)">Toyota</div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <div class="quiz-question">🍺 Question 3: What's my favorite drink?</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, true, 3)">🍺 Beer</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 3)">🥃 Arrack</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 3)">🍸 Vodka</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 3)">🍹 Gin</div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <div class="quiz-question">💼 Question 4: What's my favorite job?</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, true, 4)">👨‍💻 Software Engineer</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 4)">👨‍🏫 Lecturer</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 4)">📊 Evaluator</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 4)">👀 Invigilator</div>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <div class="quiz-question">🎮 Question 5: What's my favorite hobby?</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, true, 5)">🏍️ Riding a bike</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 5)">✈️ Travel</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 5)">😴 Sleeping</div>
+                <div class="quiz-option" onclick="answerNewQuiz(this, false, 5)">🍕 Eating</div>
+            </div>
+
+            <div id="scoreDisplay" style="text-align: center; font-size: 24px; font-weight: bold; color: #ff6b6b; margin-top: 30px; display: none;">
+                Your Score: <span id="scoreValue">0</span> / 100 🎯
+            </div>
+
+            <button id="submitQuizBtn" onclick="submitQuiz()" style="display: none; margin: 30px auto; padding: 15px 40px; background: linear-gradient(135deg, #ff6b6b, #ee5a6f); color: white; border: none; border-radius: 25px; font-size: 18px; font-weight: 600; cursor: pointer; display: block;">
+                🎁 See Your Results!
+            </button>
         </div>
 
         <!-- Final Message -->
@@ -608,9 +819,38 @@
     <!-- Easter Egg Button -->
     <button class="easter-egg" onclick="easterEgg()">🎁</button>
 
+    <!-- Gift Reveal Modal -->
+    <div class="gift-modal" id="giftModal">
+        <div class="gift-content">
+            <div class="gift-icon">🎁</div>
+            <div class="gift-title">Congratulations, My Google! 🎉</div>
+            <div class="gift-score">
+                Your Score: <span id="finalScore">100</span>/100! 🌟
+            </div>
+            <div class="gift-message" id="giftMessage">
+                <p><strong>YOU WON!</strong> 🏆</p>
+                <p>Of course you did! You're MY Google - you know everything! 😄</p>
+                <p>(Well... except left and right, but that's okay! 😂)</p>
+            </div>
+            <div class="refrigerator-hint">
+                🧊 CHECK THE REFRIGERATOR! 🧊<br>
+                <span style="font-size: 16px; display: block; margin-top: 10px;">
+                Your real gift is waiting for you there!<br>
+                (Yes, the big white box in the kitchen... you know, the one that keeps things cold? 😉)
+                </span>
+            </div>
+            <p style="font-size: 14px; color: #888; font-style: italic;">
+                P.S. - Don't worry if you forgot what a refrigerator is... just follow the cold air! 🤣❤️
+            </p>
+            <button class="close-gift-btn" onclick="closeGiftModal()">❤️ Thank You, My Love!</button>
+        </div>
+    </div>
+
     <script>
         let clickCount = 0;
         let heartsCreated = 0;
+        let quizScore = 0;
+        let questionsAnswered = new Set();
 
         // Create floating hearts
         function createHeart() {
@@ -668,13 +908,15 @@
             incrementClicks();
         }
 
-        function answerQuiz(element, isCorrect) {
+        function answerQuiz(element, isCorrect, questionNum) {
             if (isCorrect) {
                 element.classList.add('correct');
                 element.innerHTML += ' ✓ CORRECT! That\'s my girl! 😘';
+                
+                // Show the new quiz section
                 setTimeout(() => {
-                    document.getElementById('finalMessage').style.display = 'block';
-                    document.getElementById('finalMessage').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('newQuizSection').style.display = 'block';
+                    document.getElementById('newQuizSection').scrollIntoView({ behavior: 'smooth' });
                 }, 1500);
                 
                 // Heart explosion
@@ -685,6 +927,112 @@
                 element.style.background = '#ffebee';
                 element.innerHTML += ' ❌ Try again, my Google knows better!';
             }
+            incrementClicks();
+        }
+
+        function answerNewQuiz(element, isCorrect, questionNum) {
+            // Prevent answering the same question twice
+            if (questionsAnswered.has(questionNum)) {
+                return;
+            }
+
+            const allOptions = element.parentElement.querySelectorAll('.quiz-option');
+            allOptions.forEach(opt => {
+                opt.style.pointerEvents = 'none'; // Disable all options in this question
+            });
+
+            questionsAnswered.add(questionNum);
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                element.innerHTML += ' ✓ CORRECT! +20 points! 🎉';
+                quizScore += 20;
+                
+                // Create hearts
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(createHeart, i * 100);
+                }
+            } else {
+                element.style.background = '#ffebee';
+                element.style.borderColor = '#f44336';
+                element.innerHTML += ' ❌ Oops! But I still love you! 😘';
+            }
+
+            // Update score display
+            document.getElementById('scoreValue').textContent = quizScore;
+            document.getElementById('scoreDisplay').style.display = 'block';
+
+            // If all 5 questions answered, show submit button
+            if (questionsAnswered.size === 5) {
+                document.getElementById('submitQuizBtn').style.display = 'block';
+                document.getElementById('submitQuizBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            incrementClicks();
+        }
+
+        function submitQuiz() {
+            // Show the gift modal
+            document.getElementById('finalScore').textContent = quizScore;
+            
+            // Customize message based on score
+            const messageDiv = document.getElementById('giftMessage');
+            if (quizScore === 100) {
+                messageDiv.innerHTML = `
+                    <p><strong>PERFECT SCORE! YOU WON! 🏆</strong></p>
+                    <p>Of course you did! You're MY Google - you know everything about me! 😄</p>
+                    <p>(Well... except left and right, but that's our little secret! 😂)</p>
+                `;
+            } else if (quizScore >= 60) {
+                messageDiv.innerHTML = `
+                    <p><strong>YOU WON! 🎉</strong></p>
+                    <p>Yes, even with ${quizScore} points, you WIN! Because you're MY Google! 💕</p>
+                    <p>I don't care about the score - you win my heart every single day! ❤️</p>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <p><strong>GUESS WHAT? YOU STILL WON! 🎁</strong></p>
+                    <p>Your score might be ${quizScore}, but in my book, you're always 💯!</p>
+                    <p>You know what matters most - how to make me smile! 😊</p>
+                    <p>Plus, I love you even when you think sleeping is a hobby! 😂❤️</p>
+                `;
+            }
+            
+            document.getElementById('giftModal').classList.add('show');
+            
+            // Create massive confetti explosion
+            createConfetti();
+            
+            // Mega heart explosion
+            for (let i = 0; i < 50; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+
+            incrementClicks();
+        }
+
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ee5a6f', '#667eea', '#764ba2', '#f6d365', '#fda085'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        function closeGiftModal() {
+            document.getElementById('giftModal').classList.remove('show');
+            
+            // Show final message
+            document.getElementById('finalMessage').style.display = 'block';
+            document.getElementById('finalMessage').scrollIntoView({ behavior: 'smooth' });
+            
             incrementClicks();
         }
 
